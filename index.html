@@ -9,34 +9,6 @@
 <script type="module">
   import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-  // Find these under Supabase Dashboard -> Project settings -> API.
-  // The anon/public key is safe to expose in client-side code — it only
-  // works within the Row Level Security rules you set on each table.
-  const SUPABASE_URL = "https://YOUR-PROJECT-REF.supabase.co";
-  const SUPABASE_ANON_KEY = "YOUR-ANON-PUBLIC-KEY";
-
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  // Expose to the rest of the page (the app's main script is a classic, non-module script)
-  window.supabase = supabase;
-
-  // Called by the "Continue with Google" button. Supabase OAuth works by
-  // redirecting the whole page to Google and back — not a popup — so this
-  // function starts the redirect; it doesn't return a user directly.
-  window.supabaseSignInWithGoogle = async function(){
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: window.location.href }
-    });
-    if(error) throw error;
-  };
-
-  // On load (including right after the Google redirect comes back), check
-  // whether there's already an active session and unlock the app if so.
-  window.supabaseCheckSession = async function(){
-    const { data } = await supabase.auth.getSession();
-    return data.session ? data.session.user : null;
-  };
 </script>
 <style>
   :root{
